@@ -76,7 +76,7 @@ I found this afterwards when I was doing this writeup : [solutions](https://medi
 
 ### Code Coverage
 Always try to get good code coverage, generally automate this with [jacoco](https://www.eclemma.org/jacoco/) [Sonarqube](https://www.sonarqube.org/)  
-![Coverage](Coverage.png)
+![Coverage](coverage.png)
 
 ### Further work
 Lately I've been doing a bunch of React work, so it would be easy to convert this into a rich-web solution.
