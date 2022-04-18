@@ -27,7 +27,8 @@ Of course, it would be possible to further optimize with some sort of bit array,
 
 ### Performance
 The best performance from this solution is a simple linear scan, therefore o(n).  The worst case involves a lot of 
-backtracking, but since the 'hardest' problem was solved in 15ms we are working within bounds.
+backtracking, but since the 'hardest' problem was solved in 15ms we are working within bounds.  To be fair the worst
+case will be O(n^(n*n)) and my work on a 16 x 16 grid proved this can be very slow.
 
 ### Recursion
 Recursion is taught heavily in computer science and is a good way to break apart a problem, it can also be used to 

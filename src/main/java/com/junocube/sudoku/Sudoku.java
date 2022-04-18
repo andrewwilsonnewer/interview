@@ -9,11 +9,6 @@ package com.junocube.sudoku;
 public class Sudoku {
 
     /**
-     * The size of the grid.
-     */
-    private static final int GRID_SIZE = 9;
-
-    /**
      * The grid of data to be solved.
      */
     private final byte[] grid;
@@ -21,7 +16,7 @@ public class Sudoku {
     /**
      * A padded array of the empty cell offsets.
      */
-    private final byte[] emptyCellOffsets = new byte[GRID_SIZE*GRID_SIZE];
+    private final int[] emptyCellOffsets;
 
     /**
      * How many empty cells there are.
@@ -29,34 +24,52 @@ public class Sudoku {
     private final int emptyCellLength;
 
     /**
+     * The size of the grid.
+     */
+    private final int rowLength;
+
+    /**
+     * The size of the box.
+     */
+    private final int boxSize;
+
+    /**
      * Solve a 9x9 sudoku grid.
      *
-     * @param grid the grid which may contain 0 (fill) or values 1-9
+     * @param grid the grid which may contain 0 (fill) or valid values
+     * @param rowLength the length of a row
+     * @param boxSize the size of a box
+     *
      * @throws GridException if a problem occurs
      */
-    public static void solve(final byte[] grid) throws GridException {
-        new Sudoku(grid).solveSudoku();
+    public static void solve(final byte[] grid, final int rowLength, final int boxSize) throws GridException {
+        new Sudoku(grid, rowLength, boxSize).solveSudoku();
     }
 
-    private Sudoku(final byte[] grid) throws GridException {
+    private Sudoku(final byte[] grid, final int rowLength, final int boxSize) throws GridException {
 
         if (grid == null) {
             throw new GridException("Null grid");
         }
 
-        if (grid.length != GRID_SIZE*GRID_SIZE) {
+        if (grid.length != rowLength * rowLength) {
             throw new GridException("Incorrect size grid");
         }
+
+        this.boxSize = boxSize;
+        this.rowLength = rowLength;
+
+        this.emptyCellOffsets = new int[rowLength * rowLength];
 
         this.grid = grid;
 
         int emptyLength = 0;
 
         // loop through the grid validating the initial inputs
-        for (byte i = 0; i < grid.length; i++) {
+        for (int i = 0; i < grid.length; i++) {
             byte value = grid[i];
 
-            if (value < 0 || value > 9) {
+            if (value < 0 || value > rowLength) {
                 throw new GridException("Invalid value in Grid");
             }
 
@@ -92,7 +105,7 @@ public class Sudoku {
 
             byte value = grid[cellOffset];
 
-            if (value == 9) {
+            if (value == rowLength) {
                 // we have tried all the values and need to backtrack
                 grid[cellOffset] = 0;
                 currentOffset--;
@@ -118,23 +131,23 @@ public class Sudoku {
      */
     private boolean isSafe(final int offset, final int number) {
 
-        int row = offset / GRID_SIZE;
-        int col = offset % GRID_SIZE;
-        int startBoxRow = row - row % 3, startBoxCol = col - col % 3;
+        int row = offset / rowLength;
+        int col = offset % rowLength;
+        int startBoxRow = row - row % boxSize, startBoxCol = col - col % boxSize;
 
-        for (int i = 0; i < GRID_SIZE; i++) {
+        for (int i = 0; i < rowLength; i++) {
             // check same row
-            if (grid[(row * GRID_SIZE) + i] == number) {
+            if (grid[(row * rowLength) + i] == number) {
                 return false;
             }
 
             // check same column
-            if (grid[(GRID_SIZE * i) + col] == number) {
+            if (grid[(rowLength * i) + col] == number) {
                 return false;
             }
 
             // check same box
-            if (grid[GRID_SIZE *(i / 3 + startBoxRow) + (i % 3 + startBoxCol)] == number) {
+            if (grid[rowLength * (i / boxSize + startBoxRow) + (i % boxSize + startBoxCol)] == number) {
                 return false;
             }
         }
