@@ -74,6 +74,10 @@ There are a number of better solutions to Sudoku, I guess I'll get to them in ti
 
 I found this afterwards when I was doing this writeup : [solutions](https://medium.com/optima-blog/solving-sudoku-fast-702912c13307)
 
+### Code Coverage
+Always try to get good code coverage, generally automate this with [jacoco](https://www.eclemma.org/jacoco/) [Sonarqube](https://www.sonarqube.org/)  
+![Coverage](Coverage.png)
+
 ### Further work
 Lately I've been doing a bunch of React work, so it would be easy to convert this into a rich-web solution.
 Envisioning the following features:
@@ -84,9 +88,10 @@ Envisioning the following features:
 - I did consider rewriting this is Kotlin, but as we've been doing a lot of Java17 recently ([Valhalla value objects](https://openjdk.java.net/jeps/8277163)) this felt more comfortable
 - I could have made more use of Streams in my solution, but I explicitly wanted to try a low level array solution
 - I would have liked to do some profiling of this solution if I'd had more time, which could have produced further optimizations
+- At times I've used [Random Testing](https://en.wikipedia.org/wiki/Random_testing) and I tried some, but removed it due to time constraints
 
 ### Conclusion
-Enjoyed writing some low level performant code.  Hope it helps!
+Enjoyed writing some low level performant code.  Hope it helps!  Andrew Wilson
 
 
 

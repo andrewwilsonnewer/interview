@@ -116,7 +116,7 @@ public class Sudoku {
      * @param number the number we are thinking of adding
      * @return whether it is safe to add the given value
      */
-    boolean isSafe(final int offset, final int number) {
+    private boolean isSafe(final int offset, final int number) {
 
         int row = offset / GRID_SIZE;
         int col = offset % GRID_SIZE;
