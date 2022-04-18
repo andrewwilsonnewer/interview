@@ -51,7 +51,7 @@ public class Sudoku {
 
         int emptyLength = 0;
 
-        for (int i = 0; i < grid.length; i++) {
+        for (byte i = 0; i < grid.length; i++) {
             byte value = grid[i];
 
             if (value < 0 || value > 9) {
@@ -61,7 +61,7 @@ public class Sudoku {
             grid[i] = 0;
 
             if (value == 0) {
-                emptyCellOffsets[emptyLength++] = (byte) i;
+                emptyCellOffsets[emptyLength++] = i;
             }
             else if (!isSafe(i, value)) {
                 throw new GridException("Incorrect value in Grid");
@@ -99,6 +99,7 @@ public class Sudoku {
                 myOffset++;
             }
             else {
+                // try the next value
                 grid[cellOffset] = (byte) (value + 1);
             }
         }
@@ -119,6 +120,7 @@ public class Sudoku {
 
         int row = offset / GRID_SIZE;
         int col = offset % GRID_SIZE;
+        int startRow = row - row % 3, startCol = col - col % 3;
 
         for (int i = 0; i < GRID_SIZE; i++) {
             // check same row
@@ -130,14 +132,13 @@ public class Sudoku {
             if (grid[(GRID_SIZE * i) + col] == number) {
                 return false;
             }
-        }
 
-        // check the same box
-        int startRow = row - row % 3, startCol = col - col % 3;
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                if (grid[GRID_SIZE *(i + startRow) + (j + startCol)] == number)
-                    return false;
+            // check same box
+            int offset1 = GRID_SIZE *(i / 3 + startRow) + (i % 3 + startCol);
+            if (grid[offset1] == number) {
+                return false;
+            }
+        }
 
         // otherwise we are ok
         return true;
