@@ -75,7 +75,7 @@ There are a number of better solutions to Sudoku, I guess I'll get to them in ti
 I found this afterwards when I was doing this writeup : [solutions](https://medium.com/optima-blog/solving-sudoku-fast-702912c13307)
 
 ### Code Coverage
-Always try to get good code coverage, generally automate this with [jacoco](https://www.eclemma.org/jacoco/) [Sonarqube](https://www.sonarqube.org/)  
+Always try to get good code coverage, generally automate this with [jacoco](https://www.eclemma.org/jacoco/) or [Sonarqube](https://www.sonarqube.org/) integrated into the build
 ![Coverage](coverage.png)
 
 ### Further work
