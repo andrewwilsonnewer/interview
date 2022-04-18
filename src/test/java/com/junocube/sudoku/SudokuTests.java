@@ -101,7 +101,7 @@ class SudokuTests {
      * Expect a {@link GridException} if an invalid Grid is provided.
      */
     @Test
-    void shouldFailForInvalidInput() throws GridException {
+    void shouldFailForInvalidInput() {
         final byte[] grid = new byte[81];
         grid[0] = 1;
         grid[1] = 1;

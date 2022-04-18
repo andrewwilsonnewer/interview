@@ -1,7 +1,7 @@
 package com.junocube.sudoku;
 
 /**
- * A fast, memory efficient implementation of a Sudoku solver.  See the README.md for more details.
+ * A fast, memory efficient backtracking implementation of a Sudoku solver.  See the README.md for more details.
  *
  * @author andrew.wilson
  * @since Apr-2022
@@ -21,7 +21,7 @@ public class Sudoku {
     /**
      * A padded array of the empty cell offsets.
      */
-    private final byte[] emptyCellOffsets = new byte[81];
+    private final byte[] emptyCellOffsets = new byte[GRID_SIZE*GRID_SIZE];
 
     /**
      * How many empty cells there are.
@@ -29,8 +29,9 @@ public class Sudoku {
     private final int emptyCellLength;
 
     /**
-     * Solve a 9x9 grid
-     * @param grid the grid
+     * Solve a 9x9 sudoku grid.
+     *
+     * @param grid the grid which may contain 0 (fill) or values 1-9
      * @throws GridException if a problem occurs
      */
     public static void solve(final byte[] grid) throws GridException {
@@ -43,7 +44,7 @@ public class Sudoku {
             throw new GridException("Null grid");
         }
 
-        if (grid.length != 81) {
+        if (grid.length != GRID_SIZE*GRID_SIZE) {
             throw new GridException("Incorrect size grid");
         }
 
@@ -51,6 +52,7 @@ public class Sudoku {
 
         int emptyLength = 0;
 
+        // loop through the grid validating the initial inputs
         for (byte i = 0; i < grid.length; i++) {
             byte value = grid[i];
 
@@ -76,51 +78,49 @@ public class Sudoku {
      */
     private void solveSudoku() throws GridException {
 
-        int myOffset = 0;
+        int currentOffset = 0;
 
-        while (myOffset >= 0) {
+        // until we've solved all the blanks
+        while (currentOffset != emptyCellLength) {
 
-            if (myOffset == emptyCellLength) {
-                // we solved it!
-                return;
+            if (currentOffset < 0) {
+                // not a solution
+                throw new GridException("No valid solution");
             }
-            int cellOffset = emptyCellOffsets[myOffset];
+
+            int cellOffset = emptyCellOffsets[currentOffset];
 
             byte value = grid[cellOffset];
 
             if (value == 9) {
                 // we have tried all the values and need to backtrack
                 grid[cellOffset] = 0;
-                myOffset--;
+                currentOffset--;
             }
             else if (isSafe(cellOffset, value + 1)) {
                 // progress to the next cell
                 grid[cellOffset] = (byte) (value + 1);
-                myOffset++;
+                currentOffset++;
             }
             else {
                 // try the next value
                 grid[cellOffset] = (byte) (value + 1);
             }
         }
-
-        // not a solution
-        throw new GridException("No valid solution");
     }
-
 
     /**
      * Check whether it is safe to add a given number to the offset of the grid.
      *
      * @param offset the offset into the grid
      * @param number the number we are thinking of adding
-     * @return whether or not it is safe to add the given value
+     * @return whether it is safe to add the given value
      */
     boolean isSafe(final int offset, final int number) {
 
         int row = offset / GRID_SIZE;
         int col = offset % GRID_SIZE;
-        int startRow = row - row % 3, startCol = col - col % 3;
+        int startBoxRow = row - row % 3, startBoxCol = col - col % 3;
 
         for (int i = 0; i < GRID_SIZE; i++) {
             // check same row
@@ -134,8 +134,7 @@ public class Sudoku {
             }
 
             // check same box
-            int offset1 = GRID_SIZE *(i / 3 + startRow) + (i % 3 + startCol);
-            if (grid[offset1] == number) {
+            if (grid[GRID_SIZE *(i / 3 + startBoxRow) + (i % 3 + startBoxCol)] == number) {
                 return false;
             }
         }
