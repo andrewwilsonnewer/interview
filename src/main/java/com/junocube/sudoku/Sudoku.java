@@ -1,6 +1,8 @@
 package com.junocube.sudoku;
 
 /**
+ * A fast, memory efficient implementation of a Sudoku solver.  See the README.md for more details.,
+ *
  * @author andrew.wilson
  * @since Apr-2022
  */
@@ -46,11 +48,13 @@ public class Sudoku {
         int emptyLength = 0;
 
         for (int i = 0; i < grid.length; i++) {
-            int value = grid[i];
+            byte value = grid[i];
 
             if (value < 0 || value > 9) {
                 throw new GridException("Invalid value in Grid");
             }
+
+            grid[i] = 0;
 
             if (value == 0) {
                 emptyCellOffsets[emptyLength++] = (byte) i;
@@ -58,6 +62,7 @@ public class Sudoku {
             else if (!isSafe(i, value)) {
                 throw new GridException("Incorrect value in Grid");
             }
+            grid[i] = value;
         }
         emptyCellLength = emptyLength;
     }

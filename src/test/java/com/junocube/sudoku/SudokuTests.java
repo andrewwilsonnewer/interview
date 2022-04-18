@@ -97,12 +97,15 @@ class SudokuTests {
         assertArrayEquals(solution, empty);
     }
 
+    /**
+     * Expect a {@link GridException} if an invalid Grid is provided.
+     */
     @Test
     void shouldFailForInvalidInput() throws GridException {
         final byte[] grid = new byte[81];
         grid[0] = 1;
         grid[1] = 1;
-        assertFalse(Sudoku.solve(grid));
+        assertThrows(GridException.class, () -> Sudoku.solve(grid));
     }
 
     /**
