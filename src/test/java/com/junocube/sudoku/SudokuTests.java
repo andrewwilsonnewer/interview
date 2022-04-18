@@ -133,4 +133,22 @@ class SudokuTests {
         grid[10] = 10;
         assertThrows(GridException.class, () -> Sudoku.solve(grid));
     }
+
+    /**
+     * I found an unsolvable problem on quora https://www.quora.com/Has-anyone-ever-seen-an-unsolvable-Sudoku
+     */
+    @Test
+    void shouldFailForUnsolvableProblem() {
+        final byte[] grid = new byte[81];
+        grid[0] = 1;
+        grid[1] = 2;
+        grid[11] = 3; // this makes it unsolvable
+        grid[4] = 4;
+        grid[5] = 5;
+        grid[6] = 6;
+        grid[7] = 7;
+        grid[8] = 8;
+        grid[9] = 9;
+        assertThrows(GridException.class, () -> Sudoku.solve(grid));
+    }
 }
