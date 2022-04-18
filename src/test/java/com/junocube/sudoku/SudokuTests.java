@@ -39,7 +39,7 @@ class SudokuTests {
                 6, 9, 2, 3, 5, 1, 8, 7, 4,
                 7, 4, 5, 2, 8, 6, 3, 1, 9 };
 
-        assertTrue(Sudoku.solve(problem));
+        Sudoku.solve(problem);
 
         assertArrayEquals(solution, problem);
     }
@@ -71,7 +71,7 @@ class SudokuTests {
                 4, 3, 8, 5, 2, 6, 9, 1, 7,
                 7, 9, 6, 3, 1, 8, 4, 5, 2 };
 
-        assertTrue(Sudoku.solve(hardest));
+        Sudoku.solve(hardest);
 
         assertArrayEquals(solution, hardest);
     }
@@ -93,7 +93,7 @@ class SudokuTests {
                 9, 7, 8, 5, 3, 1, 6, 4, 2 };
 
         final byte[] empty = new byte[81];
-        assertTrue(Sudoku.solve(empty));
+        Sudoku.solve(empty);
         assertArrayEquals(solution, empty);
     }
 

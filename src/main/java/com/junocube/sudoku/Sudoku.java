@@ -1,7 +1,7 @@
 package com.junocube.sudoku;
 
 /**
- * A fast, memory efficient implementation of a Sudoku solver.  See the README.md for more details.,
+ * A fast, memory efficient implementation of a Sudoku solver.  See the README.md for more details.
  *
  * @author andrew.wilson
  * @since Apr-2022
@@ -28,9 +28,13 @@ public class Sudoku {
      */
     private final int emptyCellLength;
 
-    public static boolean solve(final byte[] grid)
-            throws GridException {
-        return new Sudoku(grid).solveSudoku();
+    /**
+     * Solve a 9x9 grid
+     * @param grid the grid
+     * @throws GridException if a problem occurs
+     */
+    public static void solve(final byte[] grid) throws GridException {
+        new Sudoku(grid).solveSudoku();
     }
 
     private Sudoku(final byte[] grid) throws GridException {
@@ -67,7 +71,10 @@ public class Sudoku {
         emptyCellLength = emptyLength;
     }
 
-    private boolean solveSudoku() {
+    /**
+     * Internal method for solving the grid.
+     */
+    private void solveSudoku() throws GridException {
 
         int myOffset = 0;
 
@@ -75,7 +82,7 @@ public class Sudoku {
 
             if (myOffset == emptyCellLength) {
                 // we solved it!
-                return true;
+                return;
             }
             int cellOffset = emptyCellOffsets[myOffset];
 
@@ -97,41 +104,42 @@ public class Sudoku {
         }
 
         // not a solution
-        return false;
+        throw new GridException("No valid solution");
     }
 
-    // Check whether it will be legal
-    // to assign num to the
-    // given row, col
-    boolean isSafe(int offset, int num) {
+
+    /**
+     * Check whether it is safe to add a given number to the offset of the grid.
+     *
+     * @param offset the offset into the grid
+     * @param number the number we are thinking of adding
+     * @return whether or not it is safe to add the given value
+     */
+    boolean isSafe(final int offset, final int number) {
 
         int row = offset / GRID_SIZE;
         int col = offset % GRID_SIZE;
 
-        // Check if we find the same num
-        // in the similar row , we
-        // return false
-        for (int x = 0; x <= 8; x++)
-            if (grid[(row * GRID_SIZE) + x] == num)
+        for (int i = 0; i < GRID_SIZE; i++) {
+            // check same row
+            if (grid[(row * GRID_SIZE) + i] == number) {
                 return false;
+            }
 
-        // Check if we find the same num
-        // in the similar column ,
-        // we return false
-        for (int x = 0; x <= 8; x++)
-            if (grid[(GRID_SIZE *x) + col] == num)
+            // check same column
+            if (grid[(GRID_SIZE * i) + col] == number) {
                 return false;
+            }
+        }
 
-        // Check if we find the same num
-        // in the particular 3*3
-        // matrix, we return false
-        int startRow = row - row % 3, startCol
-                = col - col % 3;
+        // check the same box
+        int startRow = row - row % 3, startCol = col - col % 3;
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
-                if (grid[GRID_SIZE *(i + startRow) + (j + startCol)] == num)
+                if (grid[GRID_SIZE *(i + startRow) + (j + startCol)] == number)
                     return false;
 
+        // otherwise we are ok
         return true;
     }
 }
