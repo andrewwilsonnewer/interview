@@ -3,6 +3,8 @@
 ## TL;DR
 Original code for the Cash Interview.  Efficient implementation of Sudoku backtracking.  Total time 3hrs including writeup.
 
+`Once I tried a 16x16 sq I've had to learn Dancing Links`
+
 ## Background
 I spent the weekend doing leetcode in preparation and came across a Sudoku backtracking question.  
 The [solutions](https://www.baeldung.com/java-sudoku) seemed lacking in a number of ways:
